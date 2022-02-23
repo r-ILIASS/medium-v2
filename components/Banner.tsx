@@ -1,6 +1,6 @@
 function Banner() {
   return (
-    <div className="flex justify-between items-center bg-yellow-400 border-y border-black py-10 lg:py-0">
+    <div className="flex  items-center bg-yellow-400 border-y border-black py-10 lg:py-0">
       <div className="px-10 space-y-5">
         <h1 className="max-w-xl font-serif text-6xl">
           <span className="underline decoration-black decoration-4">
