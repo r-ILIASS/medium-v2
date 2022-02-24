@@ -1,1 +1,7 @@
 # medium-v2
+
+### Environment variables:
+
+NEXT_PUBLIC_SANITY_DATASET
+NEXT_PUBLIC_SANITY_PROJECT_ID
+SANITY_API_TOKEN
