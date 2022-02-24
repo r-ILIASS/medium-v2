@@ -1,4 +1,5 @@
 // dependencies
+import { useState } from 'react'
 import PortableText from 'react-portable-text'
 import { useForm, SubmitHandler } from 'react-hook-form'
 // components
@@ -21,6 +22,8 @@ interface Props {
 }
 
 function Post({ post }: Props) {
+  const [submitted, setSubmitted] = useState(false)
+
   const {
     register,
     handleSubmit,
@@ -32,7 +35,7 @@ function Post({ post }: Props) {
       method: 'POST',
       body: JSON.stringify(data),
     })
-      .then(() => console.log(data))
+      .then(() => setSubmitted(true))
       .catch((err) => console.log(err))
   }
 
@@ -94,59 +97,67 @@ function Post({ post }: Props) {
         <hr className="border border-gray-300" />
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto my-10 mb-10 flex max-w-2xl flex-col p-5"
-      >
-        <h4 className="text-2xl font-bold">
-          Leave a comment bellow if you enjoyed the article!
-        </h4>
-        <hr className="mt-2 py-3" />
+      {/* comment form */}
+      {submitted ? (
+        <div className="my-10 mx-auto flex max-w-2xl flex-col bg-yellow-500 p-10 text-white">
+          <h3 className="text-2xl font-bold">Thank you for your comment!</h3>
+          <p>Once it has been approved, it will appear bellow.</p>
+        </div>
+      ) : (
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="mx-auto my-10 mb-10 flex max-w-2xl flex-col p-5"
+        >
+          <h4 className="text-2xl font-bold">
+            Leave a comment bellow if you enjoyed the article!
+          </h4>
+          <hr className="mt-2 py-3" />
 
-        <input {...register('_id')} type="hidden" value={post._id} />
+          <input {...register('_id')} type="hidden" value={post._id} />
 
-        <label className="mb-5 block">
-          <span className="block text-gray-700">Name</span>
+          <label className="mb-5 block">
+            <span className="block text-gray-700">Name</span>
+            <input
+              {...register('name', { required: true })}
+              className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-yellow-500 focus:ring"
+              type="text"
+              placeholder="John Smith"
+            />
+            {errors.name && (
+              <span className="text-red-500">This field is required</span>
+            )}
+          </label>
+          <label className="mb-5 block">
+            <span className="block text-gray-700">Email</span>
+            <input
+              {...register('email', { required: true })}
+              className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-yellow-500 focus:ring"
+              type="text"
+              placeholder="John Smith"
+            />
+            {errors.email && (
+              <span className="text-red-500">This field is required</span>
+            )}
+          </label>
+          <label className="mb-5 block">
+            <span className="block text-gray-700">Comment</span>
+            <textarea
+              {...register('comment', { required: true })}
+              className="shaddow form-textarea mt-1 block w-full rounded border py-2 px-3 outline-none ring-yellow-500 focus:ring"
+              placeholder="John Smith"
+              rows={8}
+            />
+            {errors.comment && (
+              <span className="text-red-500">This field is required</span>
+            )}
+          </label>
+
           <input
-            {...register('name', { required: true })}
-            className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-yellow-500 focus:ring"
-            type="text"
-            placeholder="John Smith"
+            type="submit"
+            className="focus:shadow-outline cursor-pointer rounded bg-yellow-500 py-2 px-4 font-bold text-white shadow hover:bg-yellow-400 focus:outline-none"
           />
-          {errors.name && (
-            <span className="text-red-500">This field is required</span>
-          )}
-        </label>
-        <label className="mb-5 block">
-          <span className="block text-gray-700">Email</span>
-          <input
-            {...register('email', { required: true })}
-            className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-yellow-500 focus:ring"
-            type="text"
-            placeholder="John Smith"
-          />
-          {errors.email && (
-            <span className="text-red-500">This field is required</span>
-          )}
-        </label>
-        <label className="mb-5 block">
-          <span className="block text-gray-700">Comment</span>
-          <textarea
-            {...register('comment', { required: true })}
-            className="shaddow form-textarea mt-1 block w-full rounded border py-2 px-3 outline-none ring-yellow-500 focus:ring"
-            placeholder="John Smith"
-            rows={8}
-          />
-          {errors.comment && (
-            <span className="text-red-500">This field is required</span>
-          )}
-        </label>
-
-        <input
-          type="submit"
-          className="focus:shadow-outline cursor-pointer rounded bg-yellow-500 py-2 px-4 font-bold text-white shadow hover:bg-yellow-400 focus:outline-none"
-        />
-      </form>
+        </form>
+      )}
     </main>
   )
 }
