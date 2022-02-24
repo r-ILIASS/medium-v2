@@ -24,6 +24,10 @@ interface Props {
 function Post({ post }: Props) {
   const [submitted, setSubmitted] = useState(false)
 
+  //////////////////////////////////////////////////////////
+  console.log(post)
+  /////////////////////////////////////////////////////////
+
   const {
     register,
     handleSubmit,
@@ -70,7 +74,7 @@ function Post({ post }: Props) {
             dataset={process.env.NEXT_PUBLIC_SANITY_DATASET!}
             serializers={{
               normal: ({ children }: any) => (
-                <p className="text-justify text-base">{children}</p>
+                <p className="mb-3 text-justify text-base">{children}</p>
               ),
               h1: (props: any) => (
                 <h1 className="my-5 text-2xl font-bold" {...props} />
@@ -158,6 +162,21 @@ function Post({ post }: Props) {
           />
         </form>
       )}
+
+      {/* Comments */}
+      <div className="m-y-10 shadow-grey-500 mx-auto flex max-w-2xl flex-col space-y-2 p-10 shadow">
+        <h3 className="text-4xl">Comments</h3>
+        <hr className="pb-2" />
+
+        {post.comments.map((comment) => (
+          <div key={comment._id}>
+            <p>
+              <span className="text-yellow-500">{comment.name}:</span>{' '}
+              {comment.comment}
+            </p>
+          </div>
+        ))}
+      </div>
     </main>
   )
 }
@@ -196,7 +215,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     description,
     mainImage,
     slug,
-    body
+    body,
+    'comments': *[
+      _type == 'comment' &&
+      post._ref == ^._id &&
+      approved == true
+    ]
   }`
 
   const post = await sanityClient.fetch(query, {
