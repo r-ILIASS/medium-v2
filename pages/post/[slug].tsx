@@ -164,19 +164,27 @@ function Post({ post }: Props) {
       )}
 
       {/* Comments */}
-      <div className="m-y-10 shadow-grey-500 mx-auto flex max-w-2xl flex-col space-y-2 p-10 shadow">
-        <h3 className="text-4xl">Comments</h3>
-        <hr className="pb-2" />
+      {post.comments.length < 1 ? (
+        <div className="m-y-10 shadow-grey-500 mx-auto flex max-w-2xl flex-col space-y-2 p-10 shadow">
+          <h3 className="text-sm text-gray-400">
+            There are no comments at the moment!
+          </h3>
+        </div>
+      ) : (
+        <div className="m-y-10 shadow-grey-500 mx-auto flex max-w-2xl flex-col space-y-2 p-10 shadow">
+          <h3 className="text-4xl">Comments</h3>
+          <hr className="pb-2" />
 
-        {post.comments.map((comment) => (
-          <div key={comment._id}>
-            <p>
-              <span className="text-yellow-500">{comment.name}:</span>{' '}
-              {comment.comment}
-            </p>
-          </div>
-        ))}
-      </div>
+          {post.comments.map((comment) => (
+            <div key={comment._id}>
+              <p>
+                <span className="text-yellow-500">{comment.name}:</span>{' '}
+                {comment.comment}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </main>
   )
 }
