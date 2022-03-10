@@ -1,4 +1,4 @@
-# medium-v2
+# web-dev-blog
 
 ### Environment variables:
 
