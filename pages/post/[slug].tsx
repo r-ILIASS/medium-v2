@@ -9,6 +9,8 @@ import { sanityClient, urlFor } from '../../sanity'
 // typings
 import { Post } from '../../typings'
 import { GetStaticProps } from 'next'
+import Link from 'next/link'
+import Head from 'next/head'
 
 interface FormInput {
   _id: string
@@ -40,15 +42,34 @@ function Post({ post }: Props) {
   }
 
   return (
-    <main>
+    <main className="relative mx-auto max-w-4xl">
+      <Head>
+        <title>{post.title}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <Header />
+      <div className="absolute top-0 h-9 w-full">
+        <div className="mx-auto flex h-full max-w-4xl items-center px-4 text-white">
+          <Link href="/">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 cursor-pointer"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+            </svg>
+          </Link>
+        </div>
+      </div>
 
       <img
-        className="h-60 w-full object-cover"
+        className="h-80 w-full object-cover object-bottom"
         src={urlFor(post.mainImage).url()!}
         alt=""
       />
-      <article className="mx-auto max-w-3xl p-5">
+      <article className="mx-auto max-w-4xl border-x border-b bg-white p-5">
         <h1 className="mt-10 mb-3 text-3xl">{post.title}</h1>
         <h2 className="text-xl font-light">{post.description}</h2>
         <div className="mb-8 flex items-center space-x-2">
@@ -93,20 +114,18 @@ function Post({ post }: Props) {
         </div>
       </article>
 
-      <div className="mx-auto max-w-3xl px-5">
-        <hr className="border border-gray-300" />
-      </div>
+      <div className="mx-auto max-w-4xl border-x bg-white px-5"></div>
 
       {/* comment form */}
       {submitted ? (
-        <div className="my-10 mx-auto flex max-w-2xl flex-col bg-yellow-500 p-10 text-white">
+        <div className="my-10  mx-auto flex max-w-4xl flex-col bg-slate-900 p-10 text-white">
           <h3 className="text-2xl font-bold">Thank you for your comment!</h3>
           <p>Once it has been approved, it will appear bellow.</p>
         </div>
       ) : (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mx-auto my-10 mb-10 flex max-w-2xl flex-col p-5"
+          className="mx-auto my-10 mb-10 flex max-w-4xl flex-col border bg-white p-5"
         >
           <h4 className="text-2xl font-bold">
             Leave a comment bellow if you enjoyed the article!
@@ -119,7 +138,7 @@ function Post({ post }: Props) {
             <span className="block text-gray-700">Name</span>
             <input
               {...register('name', { required: true })}
-              className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-yellow-500 focus:ring"
+              className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-slate-500 focus:ring"
               type="text"
               placeholder="John Smith"
             />
@@ -131,7 +150,7 @@ function Post({ post }: Props) {
             <span className="block text-gray-700">Email</span>
             <input
               {...register('email', { required: true })}
-              className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-yellow-500 focus:ring"
+              className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-slate-500 focus:ring"
               type="text"
               placeholder="John Smith"
             />
@@ -143,7 +162,7 @@ function Post({ post }: Props) {
             <span className="block text-gray-700">Comment</span>
             <textarea
               {...register('comment', { required: true })}
-              className="shaddow form-textarea mt-1 block w-full rounded border py-2 px-3 outline-none ring-yellow-500 focus:ring"
+              className="shaddow form-textarea mt-1 block w-full rounded border py-2 px-3 outline-none ring-slate-500 focus:ring"
               placeholder="John Smith"
               rows={8}
             />
@@ -153,28 +172,29 @@ function Post({ post }: Props) {
           </label>
 
           <input
+            value="Comment"
             type="submit"
-            className="focus:shadow-outline cursor-pointer rounded bg-yellow-500 py-2 px-4 font-bold text-white shadow hover:bg-yellow-400 focus:outline-none"
+            className="focus:shadow-outline cursor-pointer rounded bg-slate-900 py-2 px-4 font-bold text-white shadow hover:bg-slate-800 focus:outline-none"
           />
         </form>
       )}
 
       {/* Comments */}
       {post.comments.length < 1 ? (
-        <div className="m-y-10 shadow-grey-500 mx-auto flex max-w-2xl flex-col space-y-2 p-10 shadow">
+        <div className="m-y-10 shadow-grey-500 mx-auto flex max-w-4xl flex-col space-y-2 bg-white p-10 shadow">
           <h3 className="text-sm text-gray-400">
             There are no comments at the moment!
           </h3>
         </div>
       ) : (
-        <div className="m-y-10 shadow-grey-500 mx-auto flex max-w-2xl flex-col space-y-2 p-10 shadow">
+        <div className="m-y-10 shadow-grey-500 mx-auto flex max-w-4xl flex-col space-y-2 bg-white p-10 shadow">
           <h3 className="text-4xl">Comments</h3>
           <hr className="pb-2" />
 
           {post.comments.map((comment) => (
             <div key={comment._id}>
               <p>
-                <span className="text-yellow-500">{comment.name}:</span>{' '}
+                <span className="text-slate-500">{comment.name}:</span>{' '}
                 {comment.comment}
               </p>
             </div>

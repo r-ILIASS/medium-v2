@@ -11,9 +11,9 @@ interface Props {
 
 const Home = ({ posts }: Props) => {
   return (
-    <div className="mx-auto max-w-7xl">
+    <div className="mx-auto min-h-screen max-w-4xl border-x bg-white">
       <Head>
-        <title>Medium v2</title>
+        <title>Web Developer Blog</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
